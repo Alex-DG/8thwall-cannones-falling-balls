@@ -26,3 +26,6 @@ yarn dev
 # Build for production in the dist/ directory
 yarn build
 ```
+
+https://8thwall-cannones-falling-balls.vercel.app => add ball one by one
+https://8thwall-cannones-falling-balls.vercel.app?multi=true => add balls by 50
