@@ -4,6 +4,7 @@
 
 - Experiment falling ball using Three.js + Cannon-es
 - FPS monitoring
+- You can add an url parameter such as `?multi=true` to add balls in the AR scene by 50 at once
 
 ## Setup
 

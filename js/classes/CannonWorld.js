@@ -93,6 +93,41 @@ class _CannonWorld {
       }
     )
     this.world.addContactMaterial(planeSphereContactMat)
+
+    if (this.isMulti) {
+      // Create clone
+      for (let i = 0; i < 49; i++) {
+        const clone = sphereMesh.clone()
+        clone.material = new THREE.MeshStandardMaterial({
+          color: Math.random() * 0xffffff,
+          metalness: 0.05,
+          roughness: 0,
+        })
+        this.scene.add(clone)
+        // Create Body
+
+        const mat = new CANNON.Material()
+        const body = new CANNON.Body({
+          mass: 0.3,
+          shape: new CANNON.Sphere(0.125), // same as sphere geometry
+          position: new CANNON.Vec3(
+            point.x * Math.random(),
+            point.y * Math.random(),
+            point.z * Math.random()
+          ),
+          material: mat,
+        })
+        this.world.addBody(body)
+
+        this.meshes.push(clone)
+        this.bodies.push(body)
+
+        const contactMat = new CANNON.ContactMaterial(this.groundPhysMat, mat, {
+          restitution: 0.5,
+        })
+        this.world.addContactMaterial(contactMat)
+      }
+    }
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -103,6 +138,11 @@ class _CannonWorld {
 
   init() {
     const { scene, camera } = XR8.Threejs.xrScene()
+
+    this.count = document.getElementById('count')
+
+    const params = new URLSearchParams(window.location.search)
+    this.isMulti = params.get('multi') === 'true' // Returns 'value1'
 
     this.scene = scene
     this.camera = camera
@@ -159,6 +199,8 @@ class _CannonWorld {
       mesh.quaternion.copy(body.quaternion)
       this.destroyMesh(mesh, body, index)
     })
+
+    this.count.innerText = `${this.meshes.length}`
   }
 
   updateGround() {
