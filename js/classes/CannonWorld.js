@@ -10,18 +10,17 @@ class _CannonWorld {
     })
   }
 
-  setObjects() {
+  setGround() {
     const groundGeo = new THREE.PlaneGeometry(10, 10)
-    const groundMat = new THREE.MeshStandardMaterial({
-      color: 0xffffff,
-    })
+    const groundMat = new THREE.ShadowMaterial()
+    groundMat.opacity = 0.8
     this.groundMesh = new THREE.Mesh(groundGeo, groundMat)
     this.groundMesh.d
     this.groundMesh.receiveShadow = true
     this.scene.add(this.groundMesh)
   }
 
-  setBody() {
+  setGroundBody() {
     // Ground body
     this.groundPhysMat = new CANNON.Material()
     this.groundBody = new CANNON.Body({
@@ -125,8 +124,12 @@ class _CannonWorld {
     this.bind()
 
     this.setWorld()
-    this.setObjects()
-    this.setBody()
+    try {
+      this.setGround()
+      this.setGroundBody()
+    } catch (error) {
+      console.log({ error })
+    }
 
     window.addEventListener('touchstart', this.onTouchScreen, true)
   }
