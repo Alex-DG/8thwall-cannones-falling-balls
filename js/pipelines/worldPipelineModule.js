@@ -1,30 +1,26 @@
-import { Pane } from 'tweakpane'
-import * as EssentialsPlugin from '@tweakpane/plugin-essentials'
-
 import Lights from '../classes/Lights'
 import CannonWorld from '../classes/CannonWorld'
 
 export const initWorldPipelineModule = () => {
-  const pane = new Pane()
-  pane.registerPlugin(EssentialsPlugin)
-  const fpsGraph = pane.addBlade({
-    view: 'fpsgraph',
-    label: 'fps',
-  })
+  let stats
 
   const init = () => {
     Lights.init()
     CannonWorld.init()
 
+    stats = new Stats()
+    stats.showPanel(0) // 0: fps, 1: ms, 2: mb, 3+: custom
+    document.body.appendChild(stats.dom)
+
     console.log('✨', 'World ready')
   }
 
   const render = () => {
-    fpsGraph.begin()
+    stats?.begin()
 
     CannonWorld?.update()
 
-    fpsGraph.end()
+    stats?.end()
   }
 
   return {
