@@ -3,7 +3,7 @@
 ## Description
 
 - Experiment falling ball using Three.js + Cannon-es
-- FPS tracking
+- FPS monitoring
 
 ## Setup
 
